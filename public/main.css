@@ -34,11 +34,50 @@ main.content-wrapper {
 }
 
 #weather-title {
-  margin: 0;
   display: flex;
   align-items: center;
-  justify-content: left;
+  justify-content: space-between;
   padding-left: 40px;
+}
+
+.search-container {
+  margin-left: auto;
+  margin-right: 100px;
+  display: flex;
+  align-items: center;
+}
+
+#search-input {
+  margin-right: 10px;
+  padding: 8px 12px;
+  border: 2px solid #ffea06;
+  border-radius: 10px;
+  background-color: #102087;
+  color: #ffea06;
+  font-size: 16px;
+  outline: none;
+}
+
+#search-input::placeholder {
+  color: #ffea06;
+  opacity: 0.7;
+}
+
+#search-button {
+  padding: 8px 16px;
+  border: 2px solid #ffea06;
+  border-radius: 20px;
+  background-color: #ffea06;
+  color: #102087;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#search-button:hover {
+  background-color: #102087;
+  color: #ffea06;
 }
 
 #weather-icon {
@@ -60,7 +99,7 @@ main.content-wrapper {
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   width: 90%;
-  max-width: 400px;
+  max-width: 500px;
 }
 
 .weather-info {

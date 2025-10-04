@@ -11,6 +11,17 @@
       <h1 id="weather-title">
         My Weather Station
         <img src="pictures/TempEmoji.png" alt="" id="weather-icon" />
+        <div class="search-container">
+          <form id="search-form" action="/search" method="get">
+            <input
+              type="text"
+              id="search-input"
+              name="location"
+              placeholder="City, State, Country"
+            />
+            <button type="submit" id="search-button">Search</button>
+          </form>
+        </div>
       </h1>
     </header>
   </body>
