@@ -1,65 +1,78 @@
-<%- include('header.ejs') %>
-<main class="content-wrapper">
-  <h2 id="location"><%= weatherData.location %></h2>
-  <div class="card">
-    <div class="weather-info">
-      <div class="weather-icon">
-        <img
-          src="http://openweathermap.org/img/wn/<%= weatherData.weatherIcon %>@4x.png"
-          alt="<%= weatherData.weatherDescription %>"
-        />
-        <p class="weather-description">
-          <%= weatherData.weatherDescription.charAt(0).toUpperCase() +
-          weatherData.weatherDescription.slice(1) %>
-        </p>
-      </div>
-      <div class="weather-details">
-        <p class="temperature"><%= weatherData.temperature %>°F</p>
-        <p>Feels like: <%= weatherData.feelsLike %>°F</p>
-        <p>
-          Min: <%= weatherData.tempMin %>°F | Max: <%= weatherData.tempMax %>°F
-        </p>
-        <p>Pressure: <%= weatherData.pressure.inHg %> inHg</p>
-        <p>Humidity: <%= weatherData.humidity %>%</p>
-        <p>
-          Wind: <%= weatherData.wind.speed !== 'N/A' ? weatherData.wind.speed +
-          ' mph' : 'N/A' %> <%= weatherData.wind.deg !== 'N/A' ? 'at ' +
-          weatherData.wind.deg + '°' : '' %>
-        </p>
-        <p>Rain (last 1h): <%= weatherData.rain %> mm</p>
-        <p>
-          Cloudiness: <%= weatherData.clouds !== 'N/A' ? weatherData.clouds +
-          '%' : 'N/A' %>
-        </p>
-      </div>
-    </div>
-  </div>
-  <div class="card forecast-card">
-    <h3>5-Day Forecast</h3>
-    <table class="forecast-table">
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Temperature</th>
-          <th>Weather</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% forecastData.forEach(day => { %>
-        <tr>
-          <td><%= day.date %></td>
-          <td><%= day.temp %>°F</td>
-          <td>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Weather</title>
+    <link rel="stylesheet" href="/main.css" />
+  </head>
+  <body>
+    <%- include('header.ejs') %>
+    <main class="content-wrapper">
+      <h2 id="location"><%= weatherData.location %></h2>
+      <div class="card">
+        <div class="weather-info">
+          <div class="weather-icon">
             <img
-              src="http://openweathermap.org/img/wn/<%= day.icon %>.png"
-              alt="<%= day.description %>"
+              src="http://openweathermap.org/img/wn/<%= weatherData.weatherIcon %>@4x.png"
+              alt="<%= weatherData.weatherDescription %>"
             />
-            <%= day.description %>
-          </td>
-        </tr>
-        <% }); %>
-      </tbody>
-    </table>
-  </div>
-</main>
-<%- include('footer.ejs') %>
+            <p class="weather-description">
+              <%= weatherData.weatherDescription.charAt(0).toUpperCase() +
+              weatherData.weatherDescription.slice(1) %>
+            </p>
+          </div>
+          <div class="weather-details">
+            <p class="temperature"><%= weatherData.temperature %>°F</p>
+            <p>Feels like: <%= weatherData.feelsLike %>°F</p>
+            <p>
+              Min: <%= weatherData.tempMin %>°F | Max: <%= weatherData.tempMax
+              %>°F
+            </p>
+            <p>Pressure: <%= weatherData.pressure.inHg %> inHg</p>
+            <p>Humidity: <%= weatherData.humidity %>%</p>
+            <p>
+              Wind: <%= weatherData.wind.speed !== 'N/A' ?
+              weatherData.wind.speed + ' mph' : 'N/A' %> <%=
+              weatherData.wind.deg !== 'N/A' ? 'at ' + weatherData.wind.deg +
+              '°' : '' %>
+            </p>
+            <p>Rain (last 1h): <%= weatherData.rain %> mm</p>
+            <p>
+              Cloudiness: <%= weatherData.clouds !== 'N/A' ? weatherData.clouds
+              + '%' : 'N/A' %>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="card forecast-card">
+        <h3>5-Day Forecast</h3>
+        <table class="forecast-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Temperature</th>
+              <th>Weather</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% forecastData.forEach(day => { %>
+            <tr>
+              <td><%= day.date %></td>
+              <td><%= day.temp %>°F</td>
+              <td>
+                <img
+                  src="http://openweathermap.org/img/wn/<%= day.icon %>.png"
+                  alt="<%= day.description %>"
+                />
+                <%= day.description %>
+              </td>
+            </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </main>
+    <%- include('footer.ejs') %>
+  </body>
+</html>

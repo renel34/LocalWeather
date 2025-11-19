@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Weather</title>
+    <link rel="stylesheet" href="public/main.css" />
+  </head>
+  <body>
+    <header>
+      <h1 id="weather-title">
+        René's Weather Station
+        <img src="public/pictures/TempEmoji.png" alt="" id="weather-icon" />
+      </h1>
+    </header>
+
+    <main class="content-wrapper">
+      <h2 id="location">Enter a location</h2>
+      <div class="card">
+        <form id="weather-form" action="/weather" method="POST">
+          <label for="latitude">Enter a Latitude:</label>
+          <input type="text" id="latitude" name="latitude" />
+          <label for="longitude">Enter a Longitude:</label>
+          <input type="text" id="longitude" name="longitude" />
+          <button type="submit">Get Weather</button>
+        </form>
+      </div>
+    </main>
+
+    <footer>
+      <p>Copyright © 2025 René Laplante</p>
+    </footer>
+  </body>
+</html>
