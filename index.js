@@ -99,7 +99,7 @@ app.get("/", async (req, res) => {
       country_name
     );
 
-    res.render("index.ejs", { weatherData, forecastData });
+    res.render("index.ejs", { weatherData, forecastData, error: null });
   } catch (error) {
     console.error("Error:", error.message);
     res.status(500).send("Error fetching weather data");
@@ -110,7 +110,11 @@ app.get("/search", async (req, res) => {
   try {
     const location = req.query.location;
     if (!location) {
-      return res.status(400).send("Location is required");
+      return res.render("index.ejs", {
+        error: "Location is required",
+        weatherData: null,
+        forecastData: [],
+      });
     }
 
     // Split into parts (City, State/Province, Country)
@@ -149,7 +153,7 @@ app.get("/search", async (req, res) => {
       countryCode
     );
 
-    res.render("index.ejs", { weatherData, forecastData });
+    res.render("index.ejs", { weatherData, forecastData, error: null });
   } catch (error) {
     console.error("Error:", error.message);
     res.status(500).send("Error fetching weather data");

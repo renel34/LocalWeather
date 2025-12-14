@@ -9,6 +9,7 @@
   <body>
     <%- include('header.ejs') %>
     <main class="content-wrapper">
+      <% if (locals.weatherData) { %>
       <h2 id="location"><%= weatherData.location %></h2>
       <div class="card">
         <div class="weather-info">
@@ -72,7 +73,18 @@
           </tbody>
         </table>
       </div>
+      <% } %>
     </main>
     <%- include('footer.ejs') %>
+
+    <script>
+      // Use EJS to embed the error message from the server into JavaScript
+      const errorMessage = "<%= locals.error ? error : '' %>";
+
+      // If there is an error message, show it in an alert
+      if (errorMessage) {
+        alert(errorMessage);
+      }
+    </script>
   </body>
 </html>
