@@ -106,7 +106,7 @@ app.get("/", async (req, res) => {
     const { city, region_code, country_name, latitude, longitude } =
       ipResponse.data;
     console.log(
-      `Location data fetched: ${city}, ${region_code}, ${country_name} (${latitude}, ${longitude})`,
+      `Location data fetched: ${city}, ${region_code}, ${country_name} (${latitude}, ${longitude}`,
     );
 
     // Fetch weather data for the selected location
