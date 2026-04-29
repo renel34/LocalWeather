@@ -1,6 +1,7 @@
 import express from "express";
 import axios from "axios";
 import dotenv from "dotenv";
+import { saveWeatherData, getWeatherHistory } from "./src/weatherService.js";
 
 // Load environment variables from a .env file into process.env
 dotenv.config();
@@ -118,6 +119,9 @@ app.get("/", async (req, res) => {
       country_name,
     );
 
+    // Save weather data to database
+    await saveWeatherData(weatherData, latitude, longitude, city);
+
     // Render the main page with the weather data
     res.render("index.ejs", { weatherData, forecastData, error: null });
   } catch (error) {
@@ -179,11 +183,41 @@ app.get("/search", async (req, res) => {
       countryCode,
     );
 
+    // Save weather data to database
+    await saveWeatherData(weatherData, lat, lon, name);
+
     // Render the page with the new weather data
     res.render("index.ejs", { weatherData, forecastData, error: null });
   } catch (error) {
     console.error("Error:", error.message);
     res.status(500).send("Error fetching weather data");
+  }
+});
+
+/**
+ * API endpoint to fetch weather history for the last 30 days
+ */
+app.get("/api/weather/history", async (req, res) => {
+  try {
+    const location = req.query.location;
+
+    if (!location) {
+      return res.status(400).json({ error: "Location is required" });
+    }
+
+    const historyData = await getWeatherHistory(location);
+
+    if (historyData.length === 0) {
+      return res.status(404).json({
+        error: "No historical data found for this location",
+        message: "Data will be available after the first weather fetch",
+      });
+    }
+
+    res.json(historyData);
+  } catch (error) {
+    console.error("Error fetching weather history:", error);
+    res.status(500).json({ error: "Error fetching weather history" });
   }
 });
 

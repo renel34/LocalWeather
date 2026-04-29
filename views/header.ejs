@@ -1,18 +1,42 @@
-<header>
-  <h1 id="weather-title">
-    René's Weather Station
-    <img src="pictures/TempEmoji.png" alt="TempEmoji" id="weather-icon" />
-    <div class="search-container">
-      <form id="search-form" action="/search" method="get">
-        <input
-          type="text"
-          id="search-input"
-          name="location"
-          placeholder="City, State, Country"
-          autofocus
-        />
-        <button type="submit" id="search-button">Search</button>
-      </form>
+<header class="bg-indigo-950 text-amber-300">
+  <div
+    class="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-6 md:flex-row md:items-center md:justify-between"
+  >
+    <div class="flex items-center gap-4">
+      <img
+        src="pictures/TempEmoji.png"
+        alt="TempEmoji"
+        class="h-14 w-14 rounded-2xl bg-slate-800 p-2"
+      />
+      <div>
+        <p class="text-xs uppercase tracking-[0.35em] text-amber-200/80">
+          Weather Station
+        </p>
+        <h1 class="text-3xl font-semibold text-white">René's Station</h1>
+      </div>
     </div>
-  </h1>
+
+    <form
+      id="search-form"
+      action="/search"
+      method="get"
+      class="flex flex-col gap-3 sm:flex-row sm:items-center"
+    >
+      <input
+        type="text"
+        id="search-input"
+        name="location"
+        placeholder="City, State, Country"
+        autofocus
+        class="w-full rounded-2xl border border-amber-300/40 bg-slate-950/90 px-4 py-3 text-sm text-amber-100 placeholder:text-amber-200 focus:border-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-300/30 sm:w-auto"
+      />
+      <button
+        type="submit"
+        id="search-button"
+        class="rounded-full bg-amber-300 px-6 py-3 text-sm font-semibold text-indigo-950 transition hover:bg-amber-200"
+      >
+        Search
+      </button>
+    </form>
+  </div>
 </header>

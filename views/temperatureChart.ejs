@@ -1,0 +1,196 @@
+<div
+  class="w-full bg-slate-900/80 rounded-[2rem] border border-white/10 p-8 shadow-2xl shadow-slate-950/30 backdrop-blur-sm mt-8"
+>
+  <h2 class="text-2xl font-bold text-amber-300 mb-6">
+    30-Day Temperature History
+  </h2>
+  <div style="position: relative; height: 400px; width: 100%">
+    <canvas id="weatherChart"></canvas>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  async function loadChart() {
+    try {
+      const location = <%- JSON.stringify(weatherData.location.split(',')[0]) %>;
+      const response = await fetch(`/api/weather/history?location=${encodeURIComponent(location)}`);
+      const data = await response.json();
+
+      if (!Array.isArray(data) || data.length === 0) {
+        console.error('Invalid or empty data format');
+        document.getElementById('weatherChart').parentElement.innerHTML = '<p class="text-red-500">No historical data available yet</p>';
+        return;
+      }
+
+      // Transform data for Chart.js
+      const chartData = data.map(item => ({
+        date: new Date(item.created_at).toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric'
+        }),
+        temperature: parseFloat(item.temperature),
+        humidity: parseInt(item.humidity),
+        pressure: parseFloat(item.pressure),
+      }));
+
+      const ctx = document.getElementById('weatherChart').getContext('2d');
+
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: chartData.map(d => d.date),
+          datasets: [
+            {
+              label: 'Temperature (°F)',
+              data: chartData.map(d => d.temperature),
+              borderColor: '#fbbf24',
+              backgroundColor: 'rgba(251, 191, 36, 0.1)',
+              borderWidth: 2,
+              fill: true,
+              tension: 0.4,
+              pointRadius: 4,
+              pointBackgroundColor: '#fbbf24',
+              pointBorderColor: '#fff',
+              pointBorderWidth: 1,
+              yAxisID: 'y',
+            },
+            {
+              label: 'Humidity (%)',
+              data: chartData.map(d => d.humidity),
+              borderColor: '#06b6d4',
+              backgroundColor: 'rgba(6, 182, 212, 0.1)',
+              borderWidth: 2,
+              fill: true,
+              tension: 0.4,
+              pointRadius: 4,
+              pointBackgroundColor: '#06b6d4',
+              pointBorderColor: '#fff',
+              pointBorderWidth: 1,
+              yAxisID: 'y',
+            },
+            {
+              label: 'Pressure (inHg)',
+              data: chartData.map(d => d.pressure),
+              borderColor: '#8b5cf6',
+              backgroundColor: 'rgba(139, 92, 246, 0.1)',
+              borderWidth: 2,
+              fill: true,
+              tension: 0.4,
+              pointRadius: 4,
+              pointBackgroundColor: '#8b5cf6',
+              pointBorderColor: '#fff',
+              pointBorderWidth: 1,
+              yAxisID: 'y1',
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {
+            mode: 'index',
+            intersect: false,
+          },
+          plugins: {
+            legend: {
+              display: true,
+              labels: {
+                color: '#e2e8f0',
+                font: {
+                  size: 12,
+                  weight: 'bold',
+                },
+                padding: 15,
+                usePointStyle: true,
+              },
+            },
+            tooltip: {
+              backgroundColor: 'rgba(30, 41, 59, 0.9)',
+              titleColor: '#e2e8f0',
+              bodyColor: '#cbd5e1',
+              borderColor: '#475569',
+              borderWidth: 1,
+              padding: 12,
+              displayColors: true,
+              callbacks: {
+                label: function(context) {
+                  let label = context.dataset.label || '';
+                  if (label) {
+                    label += ': ';
+                  }
+                  if (context.parsed.y !== null) {
+                    label += context.parsed.y.toFixed(1);
+                  }
+                  return label;
+                }
+              }
+            },
+          },
+          scales: {
+            y: {
+              type: 'linear',
+              display: true,
+              position: 'left',
+              title: {
+                display: true,
+                text: 'Temperature (°F) / Humidity (%)',
+                color: '#e2e8f0',
+                font: {
+                  size: 12,
+                  weight: 'bold',
+                }
+              },
+              grid: {
+                color: 'rgba(51, 65, 85, 0.3)',
+                drawBorder: false,
+              },
+              ticks: {
+                color: '#94a3b8',
+              },
+            },
+            y1: {
+              type: 'linear',
+              display: true,
+              position: 'right',
+              title: {
+                display: true,
+                text: 'Pressure (inHg)',
+                color: '#e2e8f0',
+                font: {
+                  size: 12,
+                  weight: 'bold',
+                }
+              },
+              grid: {
+                drawOnChartArea: false,
+              },
+              ticks: {
+                color: '#94a3b8',
+              },
+            },
+            x: {
+              grid: {
+                color: 'rgba(51, 65, 85, 0.3)',
+                drawBorder: false,
+              },
+              ticks: {
+                color: '#94a3b8',
+                font: {
+                  size: 11,
+                }
+              },
+            },
+          },
+        },
+      });
+    } catch (error) {
+      console.error('Error loading chart:', error);
+      document.getElementById('weatherChart').parentElement.innerHTML = '<p class="text-red-500">Error loading chart data</p>';
+    }
+  }
+
+  // Load chart when page loads
+  document.addEventListener('DOMContentLoaded', loadChart);
+</script>

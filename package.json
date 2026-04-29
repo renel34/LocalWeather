@@ -6,14 +6,18 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "build:css": "tailwindcss -i ./src/input.css -o ./public/output.css",
     "start": "nodemon index.js"
   },
   "author": "René Laplante",
   "license": "ISC",
   "dependencies": {
+    "@tailwindcss/cli": "^4.2.4",
     "axios": "^1.9.0",
     "dotenv": "^16.5.0",
     "ejs": "^3.1.10",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "pg": "^8.20.0",
+    "tailwindcss": "^4.2.4"
   }
 }
