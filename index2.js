@@ -3,9 +3,6 @@ import axios from "axios";
 import dotenv from "dotenv";
 import { saveWeatherData, getWeatherHistory } from "./src/weatherService.js";
 
-// Set timezone for the Node.js process (change to your timezone)
-process.env.TZ = "America/New_York";
-
 // Load environment variables from a .env file into process.env
 dotenv.config();
 
@@ -91,114 +88,16 @@ async function fetchWeatherData(
   return { weatherData, forecastData };
 }
 
-/**
- * Fetches and saves weather data for a specific location
- * @param {number} latitude
- * @param {number} longitude
- * @param {string} city
- * @param {string} region_code
- * @param {string} country_name
- */
-async function fetchAndSaveWeather(
-  latitude,
-  longitude,
-  city,
-  region_code,
-  country_name,
-) {
-  try {
-    const { weatherData } = await fetchWeatherData(
-      latitude,
-      longitude,
-      city,
-      region_code,
-      country_name,
-    );
-    await saveWeatherData(weatherData, latitude, longitude, city);
-    console.log(
-      `Weather data saved for ${city} at ${new Date().toLocaleString()}`,
-    );
-  } catch (error) {
-    console.error(`Error fetching weather for ${city}:`, error.message);
-  }
-}
-
-/**
- * Calculates milliseconds until the next noon (12:00 PM)
- * @returns {number} Milliseconds until the next noon
- */
-function msUntilNextNoon() {
-  const now = new Date();
-  const nextNoon = new Date(
-    now.getFullYear(),
-    now.getMonth(),
-    now.getDate(),
-    12, // 12:00 PM
-    0,
-    0,
-    0,
-  );
-
-  // If it's already past noon today, schedule for noon tomorrow
-  if (now >= nextNoon) {
-    nextNoon.setDate(nextNoon.getDate() + 1);
-  }
-
-  return nextNoon - now;
-}
-
-/**
- * Schedules daily weather updates at noon
- */
-function scheduleDailyUpdates() {
-  // Run updates for all tracked locations
-  const runUpdates = async () => {
-    console.log(
-      `Running daily weather update at ${new Date().toLocaleString()}`,
-    );
-
-    for (const locationData of trackedLocations) {
-      const { latitude, longitude, city, region_code, country_name } =
-        JSON.parse(locationData);
-      await fetchAndSaveWeather(
-        latitude,
-        longitude,
-        city,
-        region_code,
-        country_name,
-      );
-    }
-  };
-
-  // Schedule first run at the next noon
-  const msToNextNoon = msUntilNextNoon();
-  console.log(
-    `First update scheduled in ${Math.round(msToNextNoon / 1000 / 60 / 60)} hours and ${Math.round((msToNextNoon / 1000 / 60) % 60)} minutes`,
-  );
-
-  setTimeout(() => {
-    runUpdates(); // Run immediately at noon
-    // Then run every 24 hours (86400000 ms = 24 hours)
-    setInterval(runUpdates, 86400000);
-  }, msToNextNoon);
-}
-
 // Initialize Express app and set port
 const app = express();
-const port = process.env.PORT || 3000;
+const port = 3000;
 // Get API key from environment variables
 const WEATHER_API_KEY = process.env.WEATHER_API_KEY;
-
-// Store tracked locations (you can also store these in a database)
-const trackedLocations = new Set();
 
 // Middleware setup
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use(express.static("public")); // Serve static files from the "public" directory
-
-// Set EJS as the view engine
-app.set("view engine", "ejs");
 
 // Main route handler for the homepage
 app.get("/", async (req, res) => {
@@ -208,12 +107,7 @@ app.get("/", async (req, res) => {
     const { city, region_code, country_name, latitude, longitude } =
       ipResponse.data;
     console.log(
-      `Location data fetched: ${city}, ${region_code}, ${country_name} (${latitude}, ${longitude})`,
-    );
-
-    // Add location to tracked locations
-    trackedLocations.add(
-      JSON.stringify({ latitude, longitude, city, region_code, country_name }),
+      `Location data fetched: ${city}, ${region_code}, ${country_name} (${latitude}, ${longitude}`,
     );
 
     // Fetch weather data for the selected location
@@ -280,17 +174,6 @@ app.get("/search", async (req, res) => {
       state: region_code,
     } = geocodingResponse.data[0];
 
-    // Add location to tracked locations
-    trackedLocations.add(
-      JSON.stringify({
-        latitude: lat,
-        longitude: lon,
-        city: name,
-        region_code: region_code || "",
-        country_name: countryCode,
-      }),
-    );
-
     // Fetch weather data for the found coordinates
     const { weatherData, forecastData } = await fetchWeatherData(
       lat,
@@ -339,9 +222,6 @@ app.get("/api/weather/history", async (req, res) => {
 });
 
 // Start the server and listen for incoming requests
-app.listen(port, "0.0.0.0", () => {
+app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
-
-  // Start the daily weather update scheduler (runs at noon)
-  scheduleDailyUpdates();
 });
