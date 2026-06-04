@@ -1,5 +1,5 @@
 {
-  "name": "testing",
+  "name": "my-weather-app",
   "version": "1.0.0",
   "description": "This is my first try at using a public API in my webser project.",
   "main": "index.js",
@@ -7,7 +7,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:css": "tailwindcss -i ./src/input.css -o ./public/output.css",
-    "start": "nodemon index.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "author": "René Laplante",
   "license": "ISC",
