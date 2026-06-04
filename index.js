@@ -90,7 +90,7 @@ async function fetchWeatherData(
 
 // Initialize Express app and set port
 const app = express();
-const port = 3000;
+const PORT = process.env.PORT || 3003;
 // Get API key from environment variables
 const WEATHER_API_KEY = process.env.WEATHER_API_KEY;
 
@@ -222,6 +222,6 @@ app.get("/api/weather/history", async (req, res) => {
 });
 
 // Start the server and listen for incoming requests
-app.listen(port, () => {
-  console.log(`Server is running on port: ${port}`);
+app.listen(PORT, () => {
+  console.log(`Server is running on port: ${PORT}`);
 });
