@@ -185,7 +185,7 @@ function scheduleDailyUpdates() {
 
 // Initialize Express app and set port
 const app = express();
-const PORT = process.env.PORT || 3003;
+const PORT = process.env.PORT || 3000;
 // Get API key from environment variables
 const WEATHER_API_KEY = process.env.WEATHER_API_KEY;
 
@@ -340,5 +340,8 @@ app.get("/api/weather/history", async (req, res) => {
 
 // Start the server and listen for incoming requests
 app.listen(PORT, () => {
-  console.log(`Server is running on port: ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
+
+  // Start the daily weather update scheduler (runs at noon)
+  scheduleDailyUpdates();
 });
