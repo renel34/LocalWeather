@@ -11,13 +11,13 @@
 
     <main class="mx-auto flex min-h-[calc(100vh-9rem)] max-w-6xl flex-col gap-8 px-4 py-10">
       <% if (locals.weatherData) { %>
-      <section class="rounded-[2rem] border border-white/10 bg-slate-900/80 p-8 shadow-2xl shadow-slate-950/30 backdrop-blur-sm">
+      <section class="rounded-4xl border border-white/10 bg-slate-900/80 p-8 shadow-2xl shadow-slate-950/30 backdrop-blur-sm">
         <h2 class="mb-8 text-center text-4xl font-semibold text-amber-300 md:text-left">
           <%= weatherData.location %>
         </h2>
 
         <div class="grid gap-8 md:grid-cols-[280px_1fr]">
-          <div class="rounded-[2rem] bg-slate-950/80 p-8 text-center shadow-inner shadow-slate-950/20">
+          <div class="rounded-4xl bg-slate-950/80 p-8 text-center shadow-inner shadow-slate-950/20">
             <img
               src="http://openweathermap.org/img/wn/<%= weatherData.weatherIcon %>@4x.png"
               alt="<%= weatherData.weatherDescription %>"
@@ -28,7 +28,7 @@
             </p>
           </div>
 
-          <div class="grid gap-4 rounded-[2rem] bg-slate-950/80 p-8 text-slate-100 shadow-inner shadow-slate-950/20">
+          <div class="grid gap-4 rounded-4xl bg-slate-950/80 p-8 text-slate-100 shadow-inner shadow-slate-950/20">
             <p class="text-6xl font-bold text-white">
               <%= weatherData.temperature %>°F
             </p>
@@ -50,7 +50,7 @@
         </div>
       </section>
 
-      <section class="rounded-[2rem] border border-white/10 bg-slate-900/80 p-8 shadow-2xl shadow-slate-950/30 backdrop-blur-sm">
+      <section class="rounded-4xl border border-white/10 bg-slate-900/80 p-8 shadow-2xl shadow-slate-950/30 backdrop-blur-sm">
         <h3 class="mb-6 text-2xl font-semibold text-amber-300">5-Day Forecast</h3>
         <div class="grid gap-4 md:grid-cols-5">
           <% forecastData.forEach(day => { %>
