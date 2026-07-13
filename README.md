@@ -164,17 +164,17 @@ The app runs at `http://localhost:3000` (or your configured `PORT`).
 CREATE TABLE weather_history (
   id SERIAL PRIMARY KEY,
   location VARCHAR(255) NOT NULL,
-  latitude DOUBLE PRECISION,
-  longitude DOUBLE PRECISION,
-  temperature INTEGER,
-  feels_like INTEGER,
-  temp_min INTEGER,
-  temp_max INTEGER,
+  latitude numeric(10,8) NOT NULL,
+  longitude numeric(11,8) NOT NULL,
+  temperature numeric(5,2) NOT NULL,
+  feels_like numeric(5,2),
+  temp_min numeric(5,2),
+  temp_max numeric(5,2),
   humidity INTEGER,
-  pressure NUMERIC,
-  wind_speed NUMERIC,
-  wind_deg NUMERIC,
-  rain NUMERIC,
+  pressure numeric(7,2),
+  wind_speed numeric(5,2),
+  wind_deg integer,
+  rain numeric(5,2),
   clouds INTEGER,
   weather_description VARCHAR(255),
   weather_icon VARCHAR(10),
@@ -188,11 +188,11 @@ Every fetch — homepage load, search, or scheduled daily update — writes one 
 
 ## API Integration
 
-| Method | Endpoint                          | Description                                                                 |
-| ------ | ---------------------------------- | ----------------------------------------------------------------------------- |
-| `GET`  | `/`                                 | Auto-detects the visitor's location by IP and renders current weather + forecast |
-| `GET`  | `/search?location=<city,state,country>` | Geocodes the given location and renders its current weather + forecast   |
-| `GET`  | `/api/weather/history?location=<city>` | Returns up to 30 days of saved readings (timestamp, temperature, humidity, pressure) for the given location, used by the chart |
+| Method | Endpoint                                | Description                                                                                                                    |
+| ------ | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `GET`  | `/`                                     | Auto-detects the visitor's location by IP and renders current weather + forecast                                               |
+| `GET`  | `/search?location=<city,state,country>` | Geocodes the given location and renders its current weather + forecast                                                         |
+| `GET`  | `/api/weather/history?location=<city>`  | Returns up to 30 days of saved readings (timestamp, temperature, humidity, pressure) for the given location, used by the chart |
 
 ---
 
